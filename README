@@ -1,8 +1,9 @@
 9clipboard
 ==========
 
-Exports the X11 clipboard as a file. Copying and pasting means reading
-and writing to the file.
-
-The module dir is an attempt to write it as a Linux character device.
-
+Export the system clipboard as a file. Ideally it would be a character
+device but I don't think it would be a good idea to connect to an X11
+server from kernel space. Instead I've used FuseFS. Although the clipboard
+is not (in this case) a filesystem but just a file. We could turn it into
+a filesystem if we would like the clipboard to be a ring-like structure
+like in Emacs. Or mantain a per app clipboard history.
