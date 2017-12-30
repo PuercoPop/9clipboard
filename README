@@ -1,0 +1,8 @@
+9clipboard
+==========
+
+Exports the X11 clipboard as a file. Copying and pasting means reading
+and writing to the file.
+
+The module dir is an attempt to write it as a Linux character device.
+
