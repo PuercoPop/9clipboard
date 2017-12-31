@@ -52,7 +52,7 @@ class ClipboardFS(Operations):
 		return 1
 
 	def read(self, path, size, offset, fh):
-		return self.contents
+		return str.encode(self.contents)
 
 	def readdir(self, path, fh):
 		if path == "/":
