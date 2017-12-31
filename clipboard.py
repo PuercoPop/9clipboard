@@ -15,7 +15,7 @@ class ClipboardFS(Operations):
 	def __init__(self):
 		now = time()
 		self.fd = 0
-		self.contents = "Hello Kitty\n"
+		self.contents = b"Hello Kitty\n"
 		self.files = dict()
 		self.files['/'] = dict(
 			st_mode=(S_IFDIR | 0o755),
@@ -23,16 +23,16 @@ class ClipboardFS(Operations):
 			st_ctime=now,
 			st_mtime=now,
 			st_uid=getuid(),
-			st_guid=getgid(),
+			st_gid=getgid(),
 			st_nlink=2)
 
 		self.files['/board'] = dict(
-			st_mode=(S_IFREG | 0o755),
+			st_mode=(S_IFREG | 0o644),
 			st_atime=now,
 			st_ctime=now,
 			st_mtime=now,
 			st_uid=getuid(),
-			st_guid=getgid(),
+			st_gid=getgid(),
 			st_size=len(self.contents),
 			st_nlink=1)
 
@@ -52,13 +52,18 @@ class ClipboardFS(Operations):
 		return 1
 
 	def read(self, path, size, offset, fh):
-		return str.encode(self.contents)
+		if path == '/board':
+			return self.contents
 
 	def readdir(self, path, fh):
 		if path == "/":
 			return ['.', '..', 'board']
 		else:
 			raise FuseOSError(errno.ENOENT)
+
+	def write(self, path, data, offset, fh):
+		if path == "/board":
+			self.contents = data
 
 if __name__ == "__main__":
 	try:
