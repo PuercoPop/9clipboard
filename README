@@ -7,3 +7,14 @@ server from kernel space. Instead I've used FuseFS. Although the clipboard
 is not (in this case) a filesystem but just a file. We could turn it into
 a filesystem if we would like the clipboard to be a ring-like structure
 like in Emacs. Or mantain a per app clipboard history.
+
+Usage Example
+=============
+
+First mount the Filesystem
+
+./clipboardFS ~/clip
+
+then read the contents of the clipboard
+
+cat ~/clip/board
