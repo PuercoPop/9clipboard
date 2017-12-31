@@ -3,6 +3,7 @@
 
 import errno
 import sys
+from os import getuid, getgid
 
 from time import time
 from stat import S_IFDIR, S_IFREG
@@ -21,17 +22,17 @@ class ClipboardFS(Operations):
 			st_atime=now,
 			st_ctime=now,
 			st_mtime=now,
-			st_uid=1000,
-			st_guid=1000,
+			st_uid=getuid(),
+			st_guid=getgid(),
 			st_nlink=2)
 
-		self.files['board'] = dict(
+		self.files['/board'] = dict(
 			st_mode=(S_IFREG | 0o755),
 			st_atime=now,
 			st_ctime=now,
 			st_mtime=now,
-			st_uid=1000,
-			st_guid=1000,
+			st_uid=getuid(),
+			st_guid=getgid(),
 			st_size=len(self.contents),
 			st_nlink=1)
 
