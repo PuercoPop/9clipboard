@@ -7,6 +7,7 @@ from subprocess import Popen, PIPE
 XSEL = '/usr/bin/xsel'
 
 class Clipboard():
+
     def read(self,):
         proc = Popen([XSEL, '-o',],  stdout=PIPE)
         return proc.stdout.read()
@@ -18,7 +19,7 @@ class Clipboard():
         return True
 
     def size(self,):
-        pass
+        return len(self.read())
 
 if __name__ == "__main__":
     clipboard = Clipboard()

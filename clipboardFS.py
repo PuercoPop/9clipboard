@@ -9,6 +9,11 @@ from time import time
 from stat import S_IFDIR, S_IFREG
 from fuse import FUSE, Operations, FuseOSError
 
+from RegularFile import RegularFile
+from clipboard import Clipboard
+
+class ClipboardFile(Clipboard, RegularFile):
+        pass
 
 class ClipboardFS(Operations):
 
@@ -26,15 +31,8 @@ class ClipboardFS(Operations):
 			st_gid=getgid(),
 			st_nlink=2)
 
-		self.files['/board'] = dict(
-			st_mode=(S_IFREG | 0o644),
-			st_atime=now,
-			st_ctime=now,
-			st_mtime=now,
-			st_uid=getuid(),
-			st_gid=getgid(),
-			st_size=len(self.contents),
-			st_nlink=1)
+		self.files['/board'] = ClipboardFile()
+
 
 	def getattr(self, path, fh=None):
 		if path not in self.files.keys():
@@ -53,7 +51,7 @@ class ClipboardFS(Operations):
 
 	def read(self, path, size, offset, fh):
 		if path == '/board':
-			return self.contents
+			return self.files[path].read()
 
 	def readdir(self, path, fh):
 		if path == "/":
